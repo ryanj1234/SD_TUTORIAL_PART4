@@ -193,9 +193,3 @@ clean_list :
 .PHONY : all begin finish end sizebefore sizeafter gccversion \
 build elf hex eep lss sym coff extcoff \
 clean clean_list program debug gdb-config
-
-READ :
-	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMER) -p $(MCU) -U eeprom:r:eedump3_16_17_1.txt:i
-
-reset:
-	$(AVRDUDE) -c $(AVRDUDE_PROGRAMMER) -p $(MCU)
