@@ -54,7 +54,6 @@ void SD_printR2(uint8_t *res);
 void SD_printR3(uint8_t *res);
 void SD_printR7(uint8_t *res);
 void SD_printBuf(uint8_t *buf);
-void SD_printCSD(uint8_t *buf);
 void SD_printDataErrToken(uint8_t token);
 
 #endif

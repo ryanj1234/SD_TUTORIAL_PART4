@@ -8,7 +8,7 @@ F_CPU = 16000000
 FORMAT = ihex
 
 # Target file name (without extension).
-TARGET = main2
+TARGET = main
 
 # C Library Directory
 CLIB =

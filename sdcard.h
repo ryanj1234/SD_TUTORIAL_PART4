@@ -49,20 +49,11 @@
 #define SD_START_TOKEN          0xFE
 #define SD_ERROR_TOKEN          0x00
 
-#define SD_CID_BYTES            128
-#define SD_BLOCK_LEN            512
-
-/* WRITE BLOCK DEFINITIONS */
-#define SD_RESPONSE_TOKEN_MASK  0xF0
 #define SD_DATA_ACCEPTED        0x05
 #define SD_DATA_REJECTED_CRC    0x0B
 #define SD_DATA_REJECTED_WRITE  0x0D
-#define SD_WRITE_TIMEOUT        0xFF
 
-/* READ BLOCK DEFINITIONS */
-#define SD_READ_NO_ERROR        0x00
-#define SD_BAD_TOKEN            0xAA
-#define SD_READ_TIMEOUT         0xFF
+#define SD_BLOCK_LEN            512
 
 // SD functions
 uint8_t SD_init(void);
@@ -75,9 +66,7 @@ void SD_readRes7(uint8_t *res);
 void SD_readBytes(uint8_t *res, uint8_t n);
 uint8_t SD_goIdleState(void);
 void SD_sendIfCond(uint8_t *res);
-uint8_t SD_sendCSD(void);
 void SD_sendStatus(uint8_t *res);
-uint8_t SD_sendCID(uint8_t *buf);
 void SD_readOCR(uint8_t *res);
 uint8_t SD_sendApp(void);
 uint8_t SD_sendOpCond(void);

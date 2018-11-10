@@ -219,52 +219,6 @@ void SD_sendIfCond(uint8_t *res)
 }
 
 /*******************************************************************************
- Read CID from SD Card
-*******************************************************************************/
-uint8_t SD_sendCID(uint8_t *buf)
-{
-    uint8_t readAttempts = 0;
-
-    // assert chip select
-    SPI_transfer(0xFF);
-    CS_ENABLE();
-    SPI_transfer(0xFF);
-
-    // send CMD10
-    SD_command(CMD10, CMD10_ARG, CMD10_CRC);
-
-    // read response
-    uint8_t res1 = SD_readRes1();
-
-    if(res1 == SD_READY)
-    {
-        while((SPI_transfer(0xFF) != SD_READ_START_TOKEN) && (readAttempts != SD_MAX_READ_ATTEMPTS)) readAttempts++;
-
-        if(readAttempts != SD_MAX_READ_ATTEMPTS) for(uint16_t i = 0; i < SD_CID_BYTES; i++) *buf++ = SPI_transfer(0xFF);
-        else res1 = 0xFF;
-
-        // read 16-bit CRC
-        SPI_transfer(0xFF);
-        SPI_transfer(0xFF);
-    }
-    else
-    {
-        // read error
-        while(((SPI_transfer(0xFF) & 0xF0) != SD_ERROR_TOKEN) && !(readAttempts == SD_MAX_READ_ATTEMPTS))
-        {
-            readAttempts++;
-        }
-    }
-
-    // deassert chip select
-    SPI_transfer(0xFF);
-    CS_DISABLE();
-    SPI_transfer(0xFF);
-
-    return res1;
-}
-
-/*******************************************************************************
  Read Status
 *******************************************************************************/
 void SD_sendStatus(uint8_t *res)
@@ -373,7 +327,7 @@ uint8_t SD_writeSingleBlock(uint32_t addr, uint8_t *buf, uint8_t *token)
     if(res1 == SD_READY)
     {
         // send start token
-        SPI_transfer(0xAA);
+        SPI_transfer(SD_START_TOKEN);
 
         // write buffer to card
         for(uint16_t i = 0; i < SD_BLOCK_LEN; i++) SPI_transfer(buf[i]);
