@@ -332,10 +332,11 @@ uint8_t SD_writeSingleBlock(uint32_t addr, uint8_t *buf, uint8_t *token)
         // write buffer to card
         for(uint16_t i = 0; i < SD_BLOCK_LEN; i++) SPI_transfer(buf[i]);
 
-        // wait for a response (timeout = 250ms)
-        readAttempts = 0;
-        while(++readAttempts != SD_MAX_WRITE_ATTEMPTS)
-            if((read = SPI_transfer(0xFF)) != 0xFF) { *token = 0xFF; break; }
+        // write CRC
+        SPI_transfer(0xFF); SPI_transfer(0xFF);
+
+        // read response
+        read = SPI_transfer(0xFF);
 
         // if data accepted
         if((read & 0x1F) == 0x05)
